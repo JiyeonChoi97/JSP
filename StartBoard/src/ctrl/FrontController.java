@@ -2,30 +2,43 @@ package ctrl;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FrontController extends HttpServlet {
 
-	public FrontController() {}
+	private static Logger log = LoggerFactory.getLogger(FrontController.class);
 	
+	public FrontController() {}
+
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String uri = req.getRequestURI();
-		System.out.println("uri : " + uri );
+		log.info("uri : " + uri );
 		
 		String contexPath = req.getContextPath();
-		System.out.println("context : " + contexPath);
+		log.info("context : " + contexPath);
 		
 		String path = uri.substring(contexPath.length());
-		System.out.println("path : " + path);
+		log.info("path : " + path);
+		
+		String targetPage = "";
 		
 		if (path.equals("/test.do")) {
 			String name = req.getParameter("myName");
-			System.out.println("Is this myName transfered?" + name);
+			log.info("Is this myName transfered?" + name);
+			
+			targetPage = "/testReturn.jsp";
 		}
+		
+		RequestDispatcher requestDispatcher = req.getRequestDispatcher(targetPage);
+		requestDispatcher.forward(req, resp);
 	}
 
 	@Override
