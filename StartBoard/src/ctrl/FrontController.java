@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import model.BoardDAO;
+
 public class FrontController extends HttpServlet {
 
 	private static Logger log = LoggerFactory.getLogger(FrontController.class);
@@ -30,9 +32,19 @@ public class FrontController extends HttpServlet {
 		
 		String targetPage = "";
 		
-		if (path.equals("/test.do")) {
-			String name = req.getParameter("myName");
-			log.info("Is this myName transfered?" + name);
+		if (path.equals("/writeSave.do")) {
+			String title = req.getParameter("title");
+			String author = req.getParameter("author");
+			String content = req.getParameter("content");
+			String email = req.getParameter("email");
+			
+			BoardDAO bdao = new BoardDAO();
+			boolean flag = bdao.insert(title, author, content, email);
+			if(flag) {
+				log.info(">>> Insert Data Success");
+			} else {
+				log.info(">>> Insert Data Fail");
+			}			
 			
 			targetPage = "/testReturn.jsp";
 		}
@@ -50,8 +62,4 @@ public class FrontController extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		service(req, resp);
 	}
-
-	
-	
-
 }
