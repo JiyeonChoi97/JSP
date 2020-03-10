@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -38,16 +39,16 @@ public class BoardDAO {
 
 	}
 	
-	public boolean insert(String title, String author, String content, String email){
+	public boolean insert(BoardDTO bdto){
 		String sql = "INSERT INTO board(title, author, content, email, regdate)"
 				+ " VALUES(?,?,?,?,now())";
 		try {
 			cn = ds.getConnection();
 			pst = cn.prepareStatement(sql);
-			pst.setString(1, title);
-			pst.setString(2, author);
-			pst.setString(3, content);
-			pst.setString(4, email);
+			pst.setString(1, bdto.getTitle());
+			pst.setString(2, bdto.getAuthor());
+			pst.setString(3, bdto.getContent());
+			pst.setString(4, bdto.getEmail());
 			pst.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -55,5 +56,58 @@ public class BoardDAO {
 			return false;
 		}
 		
+	}
+
+	public ArrayList<BoardDTO> getList() {
+		
+		String sql = "SELECT * FROM board ORDER BY bno DESC";
+		ArrayList<BoardDTO> bList = new ArrayList<>();
+		
+		try {
+			cn = ds.getConnection();
+			st = cn.createStatement();
+			rs = st.executeQuery(sql);
+			while(rs.next()) {
+				BoardDTO bdto = new BoardDTO();
+				bdto.setBno(rs.getInt("bno"));
+				bdto.setTitle(rs.getString("title"));
+				bdto.setAuthor(rs.getString("author"));
+				bdto.setContent(rs.getString("content"));
+				bdto.setEmail(rs.getString("email"));
+				bdto.setRegdate(rs.getDate("regdate"));
+				bList.add(bdto);
+				
+			}
+			
+			return bList;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public BoardDTO getDetail(int clno) {
+		String sql = "SELECT * FROM board WHERE bno=clno ORDER BY bno DESC";
+		
+		try {
+			cn = ds.getConnection();
+			st = cn.createStatement();
+			rs = st.executeQuery(sql);
+			while(rs.next()) {
+				BoardDTO bdto = new BoardDTO();
+				bdto.setBno(rs.getInt("bno"));
+				bdto.setTitle(rs.getString("title"));
+				bdto.setAuthor(rs.getString("author"));
+				bdto.setContent(rs.getString("content"));
+				bdto.setEmail(rs.getString("email"));
+				bdto.setRegdate(rs.getDate("regdate"));
+				
+			}
+			
+			return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

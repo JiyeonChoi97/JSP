@@ -1,6 +1,7 @@
 package ctrl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import model.BoardDAO;
+import model.BoardDTO;
 
 public class FrontController extends HttpServlet {
 
@@ -33,20 +35,38 @@ public class FrontController extends HttpServlet {
 		String targetPage = "";
 		
 		if (path.equals("/writeSave.do")) {
+			
 			String title = req.getParameter("title");
 			String author = req.getParameter("author");
 			String content = req.getParameter("content");
 			String email = req.getParameter("email");
 			
+			BoardDTO bdto = new BoardDTO(title, author, content, email);
+			
+			
 			BoardDAO bdao = new BoardDAO();
-			boolean flag = bdao.insert(title, author, content, email);
+			boolean flag = bdao.insert(bdto);
 			if(flag) {
 				log.info(">>> Insert Data Success");
 			} else {
 				log.info(">>> Insert Data Fail");
 			}			
 			
-			targetPage = "/testReturn.jsp";
+			targetPage = "list.do";
+		} else if(path.equals("/list.do")) {
+			BoardDAO bdao = new BoardDAO();
+			
+			ArrayList<BoardDTO> bList = (ArrayList<BoardDTO>)bdao.getList();
+			
+			if(bList == null) {
+				log.info("Getting Data Fail From DB");
+			} 
+			req.setAttribute("bList", bList);
+			targetPage = "/list.jsp";
+		} else if(path.equals("/detail.do")) {
+			int bno =  Integer.parseInt(req.getParameter("clno"));
+			BoardDAO bdao = new BoardDAO();
+			BoardDTO bdto = (BoardDTO)bdao.getDetail(bno);
 		}
 		
 		RequestDispatcher requestDispatcher = req.getRequestDispatcher(targetPage);
