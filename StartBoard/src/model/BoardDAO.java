@@ -25,21 +25,21 @@ public class BoardDAO {
 	Statement st;
 	PreparedStatement pst;
 	ResultSet rs;
-	
+
 	public BoardDAO() {
 		try {
 			Context initContext = new InitialContext();
 			Context envContext = (Context)initContext.lookup("java:/comp/env");
 			ds = (DataSource)envContext.lookup("jdbc/mysql");
-			
+
 		} catch (NamingException e) {
 			log.info(">>> error : DBCP Fail!");
 			e.printStackTrace();
 		}
 
 	}
-	
-	public boolean insert(BoardDTO bdto){
+
+	public boolean insert(BoardDTO bdto) throws SQLException{
 		String sql = "INSERT INTO board(title, author, content, email, regdate)"
 				+ " VALUES(?,?,?,?,now())";
 		try {
@@ -54,15 +54,18 @@ public class BoardDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
+		} finally {
+			if(pst != null) pst.close();
+			if(cn != null) cn.close();
 		}
-		
+
 	}
 
-	public ArrayList<BoardDTO> getList() {
-		
+	public ArrayList<BoardDTO> getList() throws SQLException {
+
 		String sql = "SELECT * FROM board ORDER BY bno DESC";
 		ArrayList<BoardDTO> bList = new ArrayList<>();
-		
+
 		try {
 			cn = ds.getConnection();
 			st = cn.createStatement();
@@ -76,19 +79,23 @@ public class BoardDAO {
 				bdto.setEmail(rs.getString("email"));
 				bdto.setRegdate(rs.getDate("regdate"));
 				bList.add(bdto);
-				
+
 			}
-			
+
 			return bList;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
+		} finally {
+			if(pst != null) pst.close();
+			if(cn != null) cn.close();
+			if(rs != null) rs.close();
 		}
 	}
 
-	public BoardDTO getDetail(int bno) {
+	public BoardDTO getDetail(int bno) throws SQLException {
 		String sql = "SELECT * FROM board WHERE bno= " + bno;
-		
+
 		try {
 			cn = ds.getConnection();
 			st = cn.createStatement();
@@ -106,6 +113,62 @@ public class BoardDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
+		} finally {
+			if(pst != null) pst.close();
+			if(cn != null) cn.close();
+			if(rs != null) rs.close();
+		}
+	}
+
+	public boolean modify(BoardDTO bdto) throws SQLException {
+		String sql = "UPDATE board SET title=?, author=?, content=?, email=?, regdate=now() WHERE bno=?";
+
+		try {
+			cn = ds.getConnection();
+			pst = cn.prepareStatement(sql);
+			pst.setString(1, bdto.getTitle());
+			pst.setString(2, bdto.getAuthor());
+			pst.setString(3, bdto.getContent());
+			pst.setString(4, bdto.getEmail());
+			pst.setInt(5, bdto.getBno());
+			pst.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if(pst != null) pst.close();
+			if(cn != null) cn.close();
+		}
+	}
+
+	public BoardDTO delete(int bno) throws SQLException {
+		String sql = "DELETE FROM board WHERE bno = "+ bno;
+		try {
+			cn = ds.getConnection();
+			st = cn.createStatement();
+			rs = st.executeQuery(sql);
+			BoardDTO bdto = new BoardDTO();
+			if(rs.next()) return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if(pst != null) pst.close();
+			if(cn != null) cn.close();
+			if(rs != null) rs.close();
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+

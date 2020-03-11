@@ -11,12 +11,12 @@ import org.slf4j.LoggerFactory;
 import model.BoardDAO;
 import model.BoardDTO;
 
-public class DetailAction implements Action{
-
+public class DeleteAction implements Action {
 	private static Logger log = LoggerFactory.getLogger(InsertAction.class);	
 
 	@Override
-	public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException  {
+	public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+
 		Integer bno = (Integer)req.getAttribute("clno");
 		if(bno == null) {
 			bno =  Integer.parseInt(req.getParameter("clno"));
@@ -25,14 +25,14 @@ public class DetailAction implements Action{
 		
 		
 		BoardDAO bdao = new BoardDAO();
-		BoardDTO bdto = (BoardDTO)bdao.getDetail(bno);
+		BoardDTO bdto = (BoardDTO)bdao.delete(bno);
 		
 		if(bdto == null) {
-			log.info("Getting Detail Data Fail From DB");
+			log.info("Getting Delete Data Fail From DB");
 		} 
-		
+
 		req.setAttribute("bdto", bdto);		
 	}
-	
 
 }
+

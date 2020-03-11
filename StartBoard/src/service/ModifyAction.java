@@ -11,29 +11,34 @@ import org.slf4j.LoggerFactory;
 import model.BoardDAO;
 import model.BoardDTO;
 
-public class InsertAction implements Action{
+public class ModifyAction implements Action {
 
 	private static Logger log = LoggerFactory.getLogger(InsertAction.class);	
 	
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+
+		int bno = Integer.parseInt(req.getParameter("clno"));
+		
 		String title = req.getParameter("title");
 		String author = req.getParameter("author");
 		String content = req.getParameter("content");
 		String email = req.getParameter("email");
 		
 		BoardDTO bdto = new BoardDTO(title, author, content, email);
-		
+		bdto.setBno(bno);
 		
 		BoardDAO bdao = new BoardDAO();
-		boolean flag = bdao.insert(bdto);
+		boolean flag = bdao.modify(bdto);
 		
 		if(flag) {
-			log.info(">>> Insert Data Success");
+			log.info(">>> Modify Data Success");
 		} else {
-			log.info(">>> Insert Data Fail");
-		}					
+			log.info(">>> Modify Data Fail");
+		}	
+		req.setAttribute("clno", bno);
+		
+		
 	}
-	
 
 }

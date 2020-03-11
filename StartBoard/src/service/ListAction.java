@@ -1,5 +1,6 @@
 package service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ public class ListAction implements Action{
 
 
 	@Override
-	public void execute(HttpServletRequest req, HttpServletResponse resp) {
+	public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
 		BoardDAO bdao = new BoardDAO();
 		
 		ArrayList<BoardDTO> bList = (ArrayList<BoardDTO>)bdao.getList();
