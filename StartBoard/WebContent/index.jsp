@@ -40,6 +40,7 @@
 		</tr>
 	</table>
 	</form>
+	<a href="./list.do" style="font-size: 20px">리스트 가기</a>
 
 </body>
 </html>

@@ -86,25 +86,23 @@ public class BoardDAO {
 		}
 	}
 
-	public BoardDTO getDetail(int clno) {
-		String sql = "SELECT * FROM board WHERE bno=clno ORDER BY bno DESC";
+	public BoardDTO getDetail(int bno) {
+		String sql = "SELECT * FROM board WHERE bno= " + bno;
 		
 		try {
 			cn = ds.getConnection();
 			st = cn.createStatement();
 			rs = st.executeQuery(sql);
-			while(rs.next()) {
-				BoardDTO bdto = new BoardDTO();
+			BoardDTO bdto = new BoardDTO();
+			if(rs.next()) {
 				bdto.setBno(rs.getInt("bno"));
 				bdto.setTitle(rs.getString("title"));
 				bdto.setAuthor(rs.getString("author"));
 				bdto.setContent(rs.getString("content"));
 				bdto.setEmail(rs.getString("email"));
 				bdto.setRegdate(rs.getDate("regdate"));
-				
 			}
-			
-			return null;
+			return bdto;				
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

@@ -35,38 +35,30 @@ public class FrontController extends HttpServlet {
 		String targetPage = "";
 		
 		if (path.equals("/writeSave.do")) {
-			
-			String title = req.getParameter("title");
-			String author = req.getParameter("author");
-			String content = req.getParameter("content");
-			String email = req.getParameter("email");
-			
-			BoardDTO bdto = new BoardDTO(title, author, content, email);
-			
-			
-			BoardDAO bdao = new BoardDAO();
-			boolean flag = bdao.insert(bdto);
-			if(flag) {
-				log.info(">>> Insert Data Success");
-			} else {
-				log.info(">>> Insert Data Fail");
-			}			
-			
 			targetPage = "list.do";
+			
 		} else if(path.equals("/list.do")) {
 			BoardDAO bdao = new BoardDAO();
 			
 			ArrayList<BoardDTO> bList = (ArrayList<BoardDTO>)bdao.getList();
 			
 			if(bList == null) {
-				log.info("Getting Data Fail From DB");
+				log.info("Getting Data List Fail From DB");
 			} 
+			
 			req.setAttribute("bList", bList);
 			targetPage = "/list.jsp";
 		} else if(path.equals("/detail.do")) {
 			int bno =  Integer.parseInt(req.getParameter("clno"));
 			BoardDAO bdao = new BoardDAO();
 			BoardDTO bdto = (BoardDTO)bdao.getDetail(bno);
+			
+			if(bdto == null) {
+				log.info("Getting Detail Data Fail From DB");
+			} 
+			
+			req.setAttribute("bdto", bdto);
+			targetPage = "/detail.jsp";
 		}
 		
 		RequestDispatcher requestDispatcher = req.getRequestDispatcher(targetPage);
