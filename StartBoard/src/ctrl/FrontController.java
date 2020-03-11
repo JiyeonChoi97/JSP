@@ -14,6 +14,10 @@ import org.slf4j.LoggerFactory;
 
 import model.BoardDAO;
 import model.BoardDTO;
+import service.Action;
+import service.DetailAction;
+import service.InsertAction;
+import service.ListAction;
 
 public class FrontController extends HttpServlet {
 
@@ -34,30 +38,21 @@ public class FrontController extends HttpServlet {
 		
 		String targetPage = "";
 		
+		Action action = null;
+		
 		if (path.equals("/writeSave.do")) {
+			action = new InsertAction();
+			action.execute(req, resp);
 			targetPage = "list.do";
 			
 		} else if(path.equals("/list.do")) {
-			BoardDAO bdao = new BoardDAO();
-			
-			ArrayList<BoardDTO> bList = (ArrayList<BoardDTO>)bdao.getList();
-			
-			if(bList == null) {
-				log.info("Getting Data List Fail From DB");
-			} 
-			
-			req.setAttribute("bList", bList);
+			action = new ListAction();
+			action.execute(req, resp);
 			targetPage = "/list.jsp";
+			
 		} else if(path.equals("/detail.do")) {
-			int bno =  Integer.parseInt(req.getParameter("clno"));
-			BoardDAO bdao = new BoardDAO();
-			BoardDTO bdto = (BoardDTO)bdao.getDetail(bno);
-			
-			if(bdto == null) {
-				log.info("Getting Detail Data Fail From DB");
-			} 
-			
-			req.setAttribute("bdto", bdto);
+			action = new DetailAction();
+			action.execute(req, resp);
 			targetPage = "/detail.jsp";
 		}
 		
