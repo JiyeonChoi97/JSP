@@ -91,7 +91,7 @@ public class FrontController extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			targetPage = "/list.do";
+			targetPage = "list.do";
 		}
 		
 		RequestDispatcher requestDispatcher = req.getRequestDispatcher(targetPage);

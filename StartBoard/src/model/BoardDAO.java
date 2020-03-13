@@ -142,24 +142,25 @@ public class BoardDAO {
 		}
 	}
 
-	public BoardDTO delete(int bno) throws SQLException {
-		String sql = "DELETE FROM board WHERE bno = "+ bno;
+	public boolean delete(int bno) throws SQLException {
+		String sql = "DELETE FROM board WHERE bno=" + bno;
+		
 		try {
 			cn = ds.getConnection();
 			st = cn.createStatement();
-			rs = st.executeQuery(sql);
-			BoardDTO bdto = new BoardDTO();
-			if(rs.next()) return null;
+			st.executeUpdate(sql);
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
 		} finally {
-			if(pst != null) pst.close();
-			if(cn != null) cn.close();
-			if(rs != null) rs.close();
+			if (st != null) st.close();
+			if (cn != null) cn.close();
+		}
+		return false;
+
 		}
 	}
-}
+
 
 
 

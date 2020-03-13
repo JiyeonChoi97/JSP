@@ -1,3 +1,5 @@
+
+
 package service;
 
 import java.sql.SQLException;
@@ -9,29 +11,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import model.BoardDAO;
-import model.BoardDTO;
 
 public class DeleteAction implements Action {
-	private static Logger log = LoggerFactory.getLogger(InsertAction.class);	
-
+	private static Logger log = LoggerFactory.getLogger(DeleteAction.class);
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+		int bno = Integer.parseInt(req.getParameter("clno"));
 
-		Integer bno = (Integer)req.getAttribute("clno");
-		if(bno == null) {
-			bno =  Integer.parseInt(req.getParameter("clno"));
-		} 
-		
-		
-		
 		BoardDAO bdao = new BoardDAO();
-		BoardDTO bdto = (BoardDTO)bdao.delete(bno);
-		
-		if(bdto == null) {
-			log.info("Getting Delete Data Fail From DB");
-		} 
+		boolean flag = bdao.delete(bno);
 
-		req.setAttribute("bdto", bdto);		
+		if (flag) {
+			log.info("Data Delete Success");
+		}else {
+			log.info("Data Delete Fail");
+		}
 	}
 
 }
