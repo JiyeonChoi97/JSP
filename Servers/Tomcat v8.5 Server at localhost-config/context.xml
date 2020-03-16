@@ -25,6 +25,5 @@
     <!--
     <Manager pathname="" />
     -->
-    <Resource name="jdbc/mysql" auto="Container" type="javax.sql.DataSource" driverClassName="com.mysql.jdbc.Driver"
-    url="jdbc:mysql://localhost/jspdb" username="root" password="" maxActive="5" maxIdle="3" />
+   
 </Context>
