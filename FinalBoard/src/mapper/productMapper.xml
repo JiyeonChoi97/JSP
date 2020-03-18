@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.productMapper">
+	<insert id="padd" parameterType="persistence.ProductDTO">
+		insert into tbl_product(category, pname, pcontent, pwriter, readcount,
+		regdate, moddate)
+		values (#{category}, #{pname}, #{pcontent}, #{pwriter}, 0, now(), now())
+	</insert>
+	<select id="pList" resultType="persistence.ProductDTO">
+		select pno, pname, pwriter from tbl_product order by pno desc
+	</select>
+	<select id="pDetail" parameterType="java.lang.Integer" resultType="persistence.ProductDTO">
+		select * from tbl_product where pno=#{pno}
+	</select>
+	<update id="pModify" parameterType="persistence.ProductDTO">
+		update tbl_product 
+		set category=#{category}, pname=#{pname}, pcontent=#{pcontent}, moddate=now()
+		where pno=#{pno}
+	</update>
+
+</mapper>
