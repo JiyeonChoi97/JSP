@@ -40,6 +40,7 @@ public class ProductDAOImpl implements ProductDAO {
 	@Override
 	public void update(ProductDTO pdto) {
 		sql.update(namespace+".pModify", pdto);
+		sql.commit();
 	}
 
 	@Override
