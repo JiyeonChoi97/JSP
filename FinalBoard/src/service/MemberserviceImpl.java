@@ -3,6 +3,7 @@ package service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,11 +15,13 @@ import org.slf4j.LoggerFactory;
 import persistence.MemberDAO;
 import persistence.MemberDAOImpl;
 import persistence.MemberDTO;
+import persistence.ProductDTO;
 
 public class MemberserviceImpl implements MemberService {
 
 	private static Logger log = LoggerFactory.getLogger(MemberserviceImpl.class);
 	MemberDAO mdao;
+	List<MemberDTO> memList;
 
 	public MemberserviceImpl() {
 		mdao = new MemberDAOImpl();
@@ -67,6 +70,11 @@ public class MemberserviceImpl implements MemberService {
 				log.info(">>> 회원가입 가능!");
 			}
 			
+		} else if(sign.equals("memList")) {
+
+			 memList = getList();	
+			 request.setAttribute("objMList", memList);
+			
 		}
 	}
 
@@ -91,6 +99,11 @@ public class MemberserviceImpl implements MemberService {
 	@Override
 	public int idCheck(String email) {
 		return mdao.idCheck(email);
+	}
+
+	@Override
+	public List<MemberDTO> getList() {
+		return mdao.selectList();
 	}
 
 

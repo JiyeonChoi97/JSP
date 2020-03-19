@@ -1,9 +1,12 @@
 package service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import persistence.MemberDTO;
+import persistence.ProductDTO;
 
 public interface MemberService {
 
@@ -11,5 +14,7 @@ public interface MemberService {
 	boolean regist(MemberDTO mdto);
 	MemberDTO login(MemberDTO mdto);
 	int idCheck(String email);
+	List<MemberDTO> getList();
+
 	
 }

@@ -19,7 +19,13 @@
 				</div>
 				<div class="col-md-6" data-animate="fadeInDown">
 					<ul class="menu">
-						<li style="color:#ffffff;">${s_email }</li>
+						<c:choose>
+							<c:when test="${s_grade eq '99' }">
+								<li style="color:#ffffff;"><a href="./member?sign=memList">${s_email }</a></li>
+							</c:when>
+							<c:otherwise><li style="color:#ffffff;">${s_email }</li></c:otherwise>
+						</c:choose>
+						
 						<li style="color:#ffffff;">( ${s_nick } )</li>
 						<li style="color:#ffffff;">
 							<c:choose>

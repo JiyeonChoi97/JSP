@@ -57,6 +57,12 @@ public class MemberController extends HttpServlet {
 			
 		} else if(sign.equals("idCheck")) {
 			service.execute(request, response, sign);
+			
+		} else if(sign.equals("memList")) {
+			service.execute(request, response, sign);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp?pg=memList");
+			dispatcher.forward(request, response);
+			
 		}
 		
 	}

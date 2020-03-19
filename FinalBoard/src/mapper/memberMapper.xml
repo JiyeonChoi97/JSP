@@ -13,5 +13,8 @@
 		<select id="idCheck" parameterType="java.lang.String" resultType="java.lang.Integer">
 		select count(email) from tbl_member where email = #{email}
 	</select>
+		<select id="memList" resultType="persistence.MemberDTO">
+		select email, nickname, pwd, grade from tbl_member order by email desc
+	</select>
 
 </mapper>

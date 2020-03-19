@@ -1,5 +1,7 @@
 package persistence;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,5 +35,10 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public int idCheck(String email) {
 		return sql.selectOne(namespace+".idCheck", email);
+	}
+
+	@Override
+	public List<MemberDTO> selectList() {
+		return sql.selectList(namespace+".memList");
 	}
 }

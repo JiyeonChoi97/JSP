@@ -21,6 +21,10 @@
 	<c:when test="${param.pg.equals('pModify') }">
 		<c:set var="printPage" value="product/modify.jsp" />
 	</c:when>
+	<c:when test="${param.pg.equals('memList') }">
+		<c:set var="printPage" value="member/memList.jsp" />
+	</c:when>
+
 </c:choose>
 
 <jsp:include page="00_header.jsp"></jsp:include>
