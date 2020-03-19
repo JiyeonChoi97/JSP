@@ -34,6 +34,7 @@ public class ProductController extends HttpServlet {
 			service.execute(request, response, sign);
 			RequestDispatcher dispathcer = request.getRequestDispatcher("index.jsp?pg=pList");
 			dispathcer.forward(request, response);
+
 		} else if(sign.equals("pWrite")) {
 			service.execute(request, response, sign);
 			RequestDispatcher dispathcer = request.getRequestDispatcher("product?sign=pList");
@@ -43,10 +44,12 @@ public class ProductController extends HttpServlet {
 			service.execute(request, response, sign);
 			RequestDispatcher dispathcer = request.getRequestDispatcher("index.jsp?pg=pDetail");
 			dispathcer.forward(request, response);
+
 		} else if(sign.equals("pModify")) {
 			service.execute(request, response, sign);
 			RequestDispatcher dispathcer = request.getRequestDispatcher("index.jsp?pg=pModify");
 			dispathcer.forward(request, response);
+
 		} else if(sign.equals("pModifySave")) {
 			service.execute(request, response, sign);
 			RequestDispatcher dispathcer = request.getRequestDispatcher("product?sign=pDetail");

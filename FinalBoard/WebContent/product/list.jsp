@@ -24,15 +24,11 @@
 								<div class="flip-container">
 									<div class="flipper">
 										<div class="front">
-											<a href="detail.html"> <img src="img/product1.jpg" alt=""
+											<a href="./product?sign=pDetail&pno=${pdto.pno }"> <img src="upload/${pdto.imgfile }" alt=""
 												class="img-responsive">
 											</a>
 										</div>
-										<div class="back">
-											<a href="detail.html"> <img src="img/product1_2.jpg"
-												alt="" class="img-responsive">
-											</a>
-										</div>
+										
 									</div>
 								</div>
 								<a href="detail.html" class="invisible"> <img

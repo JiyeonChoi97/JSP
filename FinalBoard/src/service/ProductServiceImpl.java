@@ -1,12 +1,18 @@
 package service;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import persistence.ProductDAO;
 import persistence.ProductDAOImpl;
@@ -26,18 +32,36 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response, String sign) {
-		if(sign.equals("pWrite")) {
-			String category = request.getParameter("category");
-			String pname = request.getParameter("pname");
-			String pwriter = request.getParameter("pwriter");
-			String pcontent = request.getParameter("pcontent");
-			
-			ProductDTO pdto = new ProductDTO(category, pname, pcontent, pwriter, null);
-			write(pdto);	// dao로 날리기
-			
+		if(sign.equals("pWrite")) { 
+			boolean isMultiPart = ServletFileUpload.isMultipartContent(request);
+			if(isMultiPart) {
+				ServletContext context = request.getServletContext();
+				log.info("context : " + context);
+				String saveDir = context.getRealPath("upload");
+				log.info("saveDir : " + saveDir);
+				int maxSize = 1024*1024; // 1MB
+				String encoding = "UTF-8";
+				
+				try {
+					MultipartRequest multi = new MultipartRequest(request, saveDir, maxSize, encoding, new DefaultFileRenamePolicy());
+
+					String category = multi.getParameter("category");
+					String pname = multi.getParameter("pname");
+					String pwriter = multi.getParameter("pwriter");
+					String pcontent = multi.getParameter("pcontent");
+					String imgfile = multi.getFilesystemName("imgfile");
+
+					ProductDTO pdto = new ProductDTO(category, pname, pcontent, pwriter, imgfile);
+					write(pdto);	// dao로 날리기
+				} catch (IOException e) {
+					log.info(">>> Multipart Fail");
+					e.printStackTrace();
+				}
+			}
 		} else if(sign.equals("pList")) {
 			 pList = getList();	
 			 request.setAttribute("objList", pList);
+			 
 		} else if(sign.equals("pDetail")||sign.equals("pModify")) {
 			 Integer pno = (Integer) request.getAttribute("pno");
 			 if(pno==null) {

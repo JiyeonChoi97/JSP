@@ -6,11 +6,11 @@
 <mapper namespace="mapper.productMapper">
 	<insert id="padd" parameterType="persistence.ProductDTO">
 		insert into tbl_product(category, pname, pcontent, pwriter, readcount,
-		regdate, moddate)
-		values (#{category}, #{pname}, #{pcontent}, #{pwriter}, 0, now(), now())
+		regdate, moddate, imgfile)
+		values (#{category}, #{pname}, #{pcontent}, #{pwriter}, 0, now(), now(), #{imgfile})
 	</insert>
 	<select id="pList" resultType="persistence.ProductDTO">
-		select pno, pname, pwriter from tbl_product order by pno desc
+		select pno, pname, pwriter, imgfile from tbl_product order by pno desc
 	</select>
 	<select id="pDetail" parameterType="java.lang.Integer" resultType="persistence.ProductDTO">
 		select * from tbl_product where pno=#{pno}
