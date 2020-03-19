@@ -20,5 +20,8 @@
 		set category=#{category}, pname=#{pname}, pcontent=#{pcontent}, moddate=now()
 		where pno=#{pno}
 	</update>
+	<update id="pRemove" parameterType="persistence.ProductDTO">
+		delete from tbl_product where pno=#{pno}
+	</update>
 
 </mapper>

@@ -45,8 +45,8 @@ public class ProductDAOImpl implements ProductDAO {
 
 	@Override
 	public void delete(int pno) {
-		// TODO Auto-generated method stub
-		
+		sql.delete(namespace+".pRemove", pno);
+		sql.commit();
 	}
 
 	@Override

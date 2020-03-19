@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
 			 pList = getList();	
 			 request.setAttribute("objList", pList);
 			 
-		} else if(sign.equals("pDetail")||sign.equals("pModify")) {
+		} else if(sign.equals("pDetail")||sign.equals("pModify")||sign.equals("pRemove")) {
 			 Integer pno = (Integer) request.getAttribute("pno");
 			 if(pno==null) {
 				 pno = Integer.parseInt(request.getParameter("pno"));
@@ -103,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void remove(int pno) {
-
+		pdao.delete(pno);
 	}
 
 	@Override

@@ -39,7 +39,7 @@
 							<p class="text-center buttons">
 								<a href="./product?sign=pModify&pno=${pdto.pno }" class="btn btn-primary"><i
 									class="fa fa-shopping-cart"></i> Modify</a> <a
-									href="basket.html" class="btn btn-default"><i
+									href="./product?sign=pRemove&pno=${pdto.pno }" class="btn btn-default"><i
 									class="fa fa-heart"></i> Remove</a>
 							</p>
 							</c:if>

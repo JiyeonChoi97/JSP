@@ -54,6 +54,11 @@ public class ProductController extends HttpServlet {
 			service.execute(request, response, sign);
 			RequestDispatcher dispathcer = request.getRequestDispatcher("product?sign=pDetail");
 			dispathcer.forward(request, response);
+		} else if(sign.equals("pRemove")) {
+			service.execute(request, response, sign);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("product?sign=pList");
+			dispatcher.forward(request, response);
+
 		}
 
 	}

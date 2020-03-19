@@ -19,7 +19,7 @@
 				</div>
 				<div class="row products">
 					<c:forEach items="${objList }" var="pdto">
-						<div class="col-md-3 col-sm-4">
+						<div class="col-md-3 col-sm-4" >
 							<div class="product">
 								<div class="flip-container">
 									<div class="flipper">
